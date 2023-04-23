@@ -1,5 +1,6 @@
 const http = require("http");
 const fs = require('fs');
+const _ = require('lodash')
 //      request and response 
 // this is how you create a server ..pass req and res 
 // req contains info about https requests(get,post..)
@@ -10,19 +11,39 @@ const fs = require('fs');
 const server = http.createServer((req, res) => {
     console.log("request is made");
 
+    //lodash
+    const ranNum = _.random(0, 22);
+    console.log(ranNum)
 
-    // returning htmml pages
     res.setHeader("Content-Type", 'text/html')
 
-    fs.readFile('./views/index.html', (err, data) => {
+    //basic routing
+    let path = './views/';
+
+    switch (req.url) {
+        case "/":
+            path += 'index.html';
+            break;
+    }
+    fs.readFile(path, (err, data) => {
         if (err) {
             console.log(err);
             res.end();
         } else {
-            res.write(data);
-            res.end();
+            res.end(data);
         }
     })
+
+    // returning htmml pages
+    // fs.readFile('./views/index.html', (err, data) => {
+    //     if (err) {
+    //         console.log(err);
+    //         res.end();
+    //     } else {
+    //         res.write(data);
+    //         res.end();
+    //     }
+    // })
 
 
 
